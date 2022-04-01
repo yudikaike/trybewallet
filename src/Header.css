@@ -1,0 +1,10 @@
+.Header {
+  background-color: #1B1A17;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.Header div {
+  color: #fff;
+  margin: 8px;
+}
