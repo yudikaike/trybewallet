@@ -1,0 +1,11 @@
+.ExpensesForm {
+  align-items: center;
+  background-color: #eee;
+  display: flex;
+  justify-content: space-evenly;
+  min-height: 40px;
+}
+
+.ExpensesForm input, select{
+  margin-left: 8px;
+}
