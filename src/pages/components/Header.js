@@ -12,7 +12,19 @@ class Header extends Component {
 
   totalExpense() {
     const { userExpenses } = this.props;
-    return userExpenses.reduce((total, currentValue) => total + currentValue, 0);
+
+    return userExpenses
+      .map(({
+        value,
+        currency,
+        exchangeRates,
+      }) => {
+        const { ask } = Object
+          .values(exchangeRates)
+          .find(({ code }) => code === currency);
+        return value * ask;
+      })
+      .reduce((total, currentValue) => total + currentValue, 0).toFixed(2);
   }
 
   render() {
@@ -30,7 +42,7 @@ class Header extends Component {
 Header.propTypes = {
   userEmail: PropTypes.string.isRequired,
   userExpenses: PropTypes.arrayOf(
-    PropTypes.number,
+    PropTypes.object,
   ),
 };
 
