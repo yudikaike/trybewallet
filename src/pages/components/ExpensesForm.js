@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import '../../ExpensesForm.css';
 
-import { setExpense } from '../../actions';
+import { setExpense, editTargetId, editExpense } from '../../actions';
 
 class Form extends Component {
   constructor() {
@@ -28,32 +28,49 @@ class Form extends Component {
   }
 
   onClickButton() {
-    const { expenseDispatch } = this.props;
+    const { expenseDispatch, editExpenseDispatch, editIdDispatch, editId } = this.props;
     const { id, value, currency, method, tag, description } = this.state;
 
     const REQUEST_URL = 'https://economia.awesomeapi.com.br/json/all';
 
     fetch(REQUEST_URL)
       .then((response) => response.json())
-      .then((data) => expenseDispatch({
-        id,
-        value,
-        currency,
-        method,
-        tag,
-        description,
-        exchangeRates: data,
-      }));
+      .then((data) => {
+        if (editId !== '') {
+          editExpenseDispatch({
+            id: editId,
+            value,
+            currency,
+            method,
+            tag,
+            description,
+            exchangeRates: data,
+          });
+          editIdDispatch('');
+        } else {
+          expenseDispatch({
+            id,
+            value,
+            currency,
+            method,
+            tag,
+            description,
+            exchangeRates: data,
+          });
+          this.setState((prevState) => ({
+            id: prevState.id + 1,
+          }));
+        }
+      });
 
-    this.setState((prevState) => ({
-      id: prevState.id + 1,
+    this.setState({
       value: '',
       description: '',
-    }));
+    });
   }
 
   render() {
-    const { currencies } = this.props;
+    const { currencies, editId } = this.props;
     const { value, currency, method, tag, description } = this.state;
     const methods = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
     const tags = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
@@ -142,7 +159,12 @@ class Form extends Component {
         </div>
 
         <div>
-          <button type="button" onClick={ this.onClickButton }>Adicionar despesa</button>
+          <button
+            type="button"
+            onClick={ this.onClickButton }
+          >
+            { editId !== '' ? 'Editar despesa' : 'Adicionar despesa' }
+          </button>
         </div>
       </div>
     );
@@ -154,14 +176,23 @@ Form.propTypes = {
     PropTypes.string,
   ).isRequired,
   expenseDispatch: PropTypes.func.isRequired,
+  editExpenseDispatch: PropTypes.func.isRequired,
+  editIdDispatch: PropTypes.func.isRequired,
+  editId: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]).isRequired,
 };
 
 const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
+  editId: state.wallet.editId,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   expenseDispatch: (payload) => dispatch(setExpense(payload)),
+  editIdDispatch: (payload) => dispatch(editTargetId(payload)),
+  editExpenseDispatch: (payload) => dispatch(editExpense(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Form);
