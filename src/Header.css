@@ -1,10 +1,10 @@
 .Header {
-  background-color: #1B1A17;
+  background-color: #1b1a17;
   display: flex;
   justify-content: flex-end;
 }
 
 .Header div {
-  color: #fff;
+  color: white;
   margin: 8px;
 }
