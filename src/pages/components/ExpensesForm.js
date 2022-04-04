@@ -4,10 +4,13 @@ import PropTypes from 'prop-types';
 
 import '../../ExpensesForm.css';
 
+import { setExpense } from '../../actions';
+
 class Form extends Component {
   constructor() {
     super();
     this.state = {
+      id: 0,
       value: '',
       currency: 'USD',
       method: 'Dinheiro',
@@ -15,12 +18,38 @@ class Form extends Component {
       description: '',
     };
     this.onChangeInput = this.onChangeInput.bind(this);
+    this.onClickButton = this.onClickButton.bind(this);
   }
 
   onChangeInput({ target: { name, value } }) {
     this.setState({
       [name]: value,
     });
+  }
+
+  onClickButton() {
+    const { expenseDispatch } = this.props;
+    const { id, value, currency, method, tag, description } = this.state;
+
+    const REQUEST_URL = 'https://economia.awesomeapi.com.br/json/all';
+
+    fetch(REQUEST_URL)
+      .then((response) => response.json())
+      .then((data) => expenseDispatch({
+        id,
+        value,
+        currency,
+        method,
+        tag,
+        description,
+        exchangeRates: data,
+      }));
+
+    this.setState((prevState) => ({
+      id: prevState.id + 1,
+      value: '',
+      description: '',
+    }));
   }
 
   render() {
@@ -113,7 +142,7 @@ class Form extends Component {
         </div>
 
         <div>
-          <button type="button">Adicionar despesa</button>
+          <button type="button" onClick={ this.onClickButton }>Adicionar despesa</button>
         </div>
       </div>
     );
@@ -124,10 +153,15 @@ Form.propTypes = {
   currencies: PropTypes.arrayOf(
     PropTypes.string,
   ).isRequired,
+  expenseDispatch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
 });
 
-export default connect(mapStateToProps, null)(Form);
+const mapDispatchToProps = (dispatch) => ({
+  expenseDispatch: (payload) => dispatch(setExpense(payload)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Form);
