@@ -1,16 +1,23 @@
-# 🚧 README em construção 🚧
+<h1>Trybewallet</h1>
 
-<!-- Olá, Tryber!
+<h2>Descrição sobre o projeto</h2>
 
-Esse é apenas um arquivo inicial para o README do seu projeto.
+<i>Trybewallet</i> é uma carteira virtual, com a possibilidade de adicionar, modificar ou remover despesas em diversas moedas diferentes. Esse projeto foi desenvolvido para a prática do gerenciamento do estado global da aplicação <b>React.js</b>, utilizando o <b>Redux</b>.
 
-É essencial que você preencha esse documento por conta própria, ok?
+<h2>Tecnologias utilizadas</h2>
 
-Não deixe de usar nossas dicas de escrita de README de projetos, e deixe sua criatividade brilhar!
+<img alt="React" src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
+<img alt="React Router" src="https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white" />
+<img alt="Redux" src="https://img.shields.io/badge/Redux-593D88?style=for-the-badge&logo=redux&logoColor=white" />
 
-⚠️ IMPORTANTE: você precisa deixar nítido:
-- quais arquivos/pastas foram desenvolvidos por você; 
-- quais arquivos/pastas foram desenvolvidos por outra pessoa estudante;
-- quais arquivos/pastas foram desenvolvidos pela Trybe.
+<h2>Como executar o projeto</h2>
 
--->
+Para instalar as dependências:
+```bash
+npm install
+```
+
+Para executar o projeto:
+```bash
+npm start
+```
